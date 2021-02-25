@@ -1,8 +1,11 @@
-package com.example.myretrofit
+package com.example.myretrofit.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.databinding.DataBindingUtil
+import com.example.myretrofit.R
+import com.example.myretrofit.databinding.ActivityMainBinding
 import com.example.myretrofit.retrofit.IRetrofit
 import com.example.myretrofit.retrofit.ResponseData
 import com.example.myretrofit.retrofit.RetrofitClient
@@ -15,9 +18,14 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
+    lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        
+        
 
         RetrofitClient.getClient(API_BASE_URL).apply {
             var gitService = this?.create(IRetrofit::class.java)
