@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myretrofit.R
 import com.example.myretrofit.databinding.ActivityMainBinding
 import com.example.myretrofit.retrofit.RetrofitManager
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.toObservable
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -48,7 +50,14 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "Search Completion: ${it?.results?.size}")
             // Make Adapter
             binding.rcView.layoutManager = GridLayoutManager(this@MainActivity, 3)
-            binding.rcView.adapter = PhotoAdapter(it?.results)
+            binding.rcView.adapter = PhotoAdapter()
+            //Rx Insert
+            var observableArrayList = it?.results?.toObservable()
+            val disposable = observableArrayList
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { it ->
+                    (binding.rcView.adapter as PhotoAdapter).insert(it)
+                }
         })
     }
 }
