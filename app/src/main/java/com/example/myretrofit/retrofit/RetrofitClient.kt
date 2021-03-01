@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 //싱글톤
@@ -56,7 +57,8 @@ object RetrofitClient {
         if (retrofitClient == null) {
             retrofitClient = Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create()) //data 변환
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())  //Rx Single or Obserable 반환 하기 위
                 .client(okClient.build())
                 .build()
         }

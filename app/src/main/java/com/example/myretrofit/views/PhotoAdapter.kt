@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myretrofit.databinding.PhotoItemBinding
 import com.example.myretrofit.retrofit.PhotoData
+import com.example.myretrofit.retrofit.ResponseData
 
 class PhotoAdapter() : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
@@ -32,6 +33,11 @@ class PhotoAdapter() : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>() {
 
     fun insert(item: PhotoData) {
         itemList.add(item)
+        notifyItemInserted(itemList.size-1)
+    }
+
+    fun insert(item: ResponseData) {
+        itemList.addAll(item.results)
         notifyItemInserted(itemList.size-1)
     }
 

@@ -2,6 +2,7 @@ package com.example.myretrofit.retrofit
 
 import android.util.Log
 import com.example.myretrofit.utils.Constant
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.Response
 
@@ -27,5 +28,9 @@ class RetrofitManager {
                 completion(response.body())
             }
         })
+    }
+
+    fun searchPhoto(searchTerm: String) : Single<ResponseData>? {
+        return iRetrofit?.getObserablePhoto(searchTerm)
     }
 }

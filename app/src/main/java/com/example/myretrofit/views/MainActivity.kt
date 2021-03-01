@@ -8,45 +8,26 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myretrofit.R
 import com.example.myretrofit.databinding.ActivityMainBinding
 import com.example.myretrofit.retrofit.RetrofitManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.kotlin.toObservable
+import io.reactivex.disposables.CompositeDisposable
+
+import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
     lateinit var binding : ActivityMainBinding
 
+    var mDisposeable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        // Make Adapter
+        binding.rcView.layoutManager = GridLayoutManager(this@MainActivity, 3)
+        binding.rcView.adapter = PhotoAdapter()
+        /*RetrofitManager.instance.searchPhoto("cat", completion = {
 
-//        RetrofitClient.getClient(API_BASE_URL).apply {
-//            var gitService = this?.create(IRetrofit::class.java)
-//            var call = gitService?.getPhotos("cat")
-//            call?.enqueue(object : Callback<ResponseData> {
-//                override fun onFailure(call: Call<ResponseData>, t: Throwable) {
-//                    Log.d(TAG, "onFailure: ")
-//                }
-//
-//                override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
-//                    Log.d(TAG, "onResponse: ${response.body().toString()}")
-//                }
-//            })
-//
-//            var userCall = gitService?.getUsers("doodoon87")
-//            userCall?.enqueue(object: Callback<JsonElement> {
-//                override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-//                    Log.d(TAG, "onFailure: userCall")
-//                }
-//
-//                override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-//                    Log.d(TAG, "onResponse: userCall, ${response.body()}")
-//                }
-//
-//            })
-//        }
-        RetrofitManager.instance.searchPhoto("cat", completion = {
             Log.i(TAG, "Search Completion: ${it?.results?.size}")
             // Make Adapter
             binding.rcView.layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -54,10 +35,25 @@ class MainActivity : AppCompatActivity() {
             //Rx Insert
             var observableArrayList = it?.results?.toObservable()
             val disposable = observableArrayList
-                ?.observeOn(AndroidSchedulers.mainThread())
+//                ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { it ->
                     (binding.rcView.adapter as PhotoAdapter).insert(it)
                 }
-        })
+            if (disposable != null)
+                mDisposeable.add(disposable!!)
+
+        })*/
+
+        var disposable = RetrofitManager.instance.searchPhoto("cat")
+            ?.subscribeOn(Schedulers.io)
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe {
+                it -> (binding.rcView.adapter as PhotoAdapter).insert(it)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDisposeable.clear()
     }
 }
