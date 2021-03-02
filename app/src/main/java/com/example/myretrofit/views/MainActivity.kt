@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myretrofit.R
 import com.example.myretrofit.databinding.ActivityMainBinding
 import com.example.myretrofit.retrofit.RetrofitManager
-import io.reactivex.disposables.CompositeDisposable
-
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -44,8 +44,12 @@ class MainActivity : AppCompatActivity() {
 
         })*/
 
+        var mSingle = RetrofitManager.instance.searchPhoto("cat")
+        mSingle?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe()
         var disposable = RetrofitManager.instance.searchPhoto("cat")
-            ?.subscribeOn(Schedulers.io)
+            ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe {
                 it -> (binding.rcView.adapter as PhotoAdapter).insert(it)
