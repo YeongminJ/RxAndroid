@@ -1,7 +1,7 @@
-package com.example.myretrofit.retrofit
+package com.tnfg.mvvm.api
 
 import android.util.Log
-import com.example.myretrofit.utils.Constant
+import com.tnfg.mvvm.utils.Constant
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response

@@ -1,12 +1,12 @@
-package com.example.myretrofit.retrofit
+package com.tnfg.mvvm.api
 
 import com.google.gson.JsonElement
+import com.tnfg.mvvm.model.ResponseData
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import java.util.*
 
 interface IRetrofit {
     @Headers ("Authorization: Client-ID ONxhQCASxHG1YmAY2Ln5LQ0oxDsrU6IPp8H-kFAs_BM")

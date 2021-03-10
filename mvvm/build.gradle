@@ -1,6 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    id 'com.android.application' // 안드로이드 App 사용
+    id 'kotlin-android' // Kotlin 사용
+
+    //Kotlin 의존성 설정,  자바파일의 Annotation 참조 동작 사용??? ( 자바 Annotation 을 코틀린에 적용하기 )
+    //룸? 등 사용할때 사용함
+    id 'kotlin-kapt'
 }
 
 android {
@@ -54,6 +58,21 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     //retrofit rx adapter
     implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit_version")
+    //interCeptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+    //lifecycle
+    def lifecycle_version = "2.3.0"
+    //  aac - viewmodel : LiveData 를 사용하기 위함. MVVM 의 뷰모델이 아니라, AAC 뷰모델임
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    //  liveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    //  save state Module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    //  Jetpack Compose Integration for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01"
+
+    //Anotation Processor
 
     //rxandroid
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
